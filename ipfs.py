@@ -8,42 +8,41 @@ PINATA_GATEWAY_URL = "https://apricot-obliged-bonobo-868.mypinata.cloud/ipfs"
 def pin_to_ipfs(data):
 	assert isinstance(data,dict), f"Error pin_to_ipfs expects a dictionary"
 	#YOUR CODE HERE
-  payload = {
-      "pinataContent": data,
-      "pinataMetadata": {
-          "name": "MyPinnedData",
-          "keyvalues": {
-              "project": "example-project"
-          }
-      }
-  }
+	payload = {
+			"pinataContent": data,
+			"pinataMetadata": {
+					"name": "MyPinnedData",
+					"keyvalues": {
+							"project": "example-project"
+					}
+			}
+	}
 
-  # Send the JSON data to Pinata's pinning service with JWT authorization
-  headers = {
-      "Authorization": f"Bearer {PINATA_JWT}",
-      "Content-Type": "application/json"
-  }
+	headers = {
+			"Authorization": f"Bearer {PINATA_JWT}",
+			"Content-Type": "application/json"
+	}
 
-  response = requests.post(PINATA_PIN_URL, json=payload, headers=headers)
+	response = requests.post(PINATA_PIN_URL, json=payload, headers=headers)
 
-  if response.status_code == 200:
-      cid = response.json()["IpfsHash"]
-      return cid
-  else:
-      raise Exception("Failed to pin data to IPFS")
+	if response.status_code == 200:
+			cid = response.json()["IpfsHash"]
+			return cid
+	else:
+			raise Exception("Failed to pin data to IPFS")
 	# return cid
 
 def get_from_ipfs(cid,content_type="json"):
 	assert isinstance(cid,str), f"get_from_ipfs accepts a cid in the form of a string"
 	#YOUR CODE HERE	
-  response = requests.get(f"{PINATA_GATEWAY_URL}/{cid}")
+	response = requests.get(f"{PINATA_GATEWAY_URL}/{cid}")
 
-  if response.status_code == 200:
-      data = response.json()  # Assuming the content is JSON
-      assert isinstance(data, dict), "get_from_ipfs should return a dict"
-      return data
-  else:
-      raise Exception("Failed to retrieve data from IPFS")
+	if response.status_code == 200:
+			data = response.json()  # Assuming the content is JSON
+			assert isinstance(data, dict), "get_from_ipfs should return a dict"
+			return data
+	else:
+			raise Exception("Failed to retrieve data from IPFS")
 
 	# assert isinstance(data,dict), f"get_from_ipfs should return a dict"
 	# return data
