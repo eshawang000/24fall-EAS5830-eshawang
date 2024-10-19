@@ -39,7 +39,7 @@ def get_from_ipfs(cid,content_type="json"):
 	response = requests.get(f"{PINATA_PUBLIC_GATEWAY_URL}/{cid}")
 
 	if response.status_code == 200:
-			data = response.json()  # Assuming the content is JSON
+			data = response.json()
 			assert isinstance(data, dict), "get_from_ipfs should return a dict"
 			return data
 	else:
